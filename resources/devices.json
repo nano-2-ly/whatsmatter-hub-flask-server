@@ -1,0 +1,7 @@
+[
+    {
+        "entity_id": "light.nano_vdevo",
+        "alias": "테스트 1",
+        "location": "test_room_id_1"
+    }
+]
