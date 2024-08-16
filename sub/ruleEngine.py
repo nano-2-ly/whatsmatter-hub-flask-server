@@ -43,6 +43,7 @@ def service(condition, domain, service, entity):
 
         response = requests.post(f"http://192.168.1.195:8123/api/services/{domain}/{service}", data=json.dumps(body), headers=headers)
         print(response)
+        print(response.content)
 
 def checkCondition(condition):
     for c in condition:
@@ -84,7 +85,7 @@ async def subscribe(r):
 
         while(1):
             response = await websocket.recv()
-            print(f"Received from server: {response}")
+            # print(f"Received from server: {response}")
             event = json.loads(response)
             if(event['type']=="event"):
                 r.run_pending(event)
