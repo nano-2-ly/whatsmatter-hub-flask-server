@@ -1,7 +1,7 @@
 [
     {
-        "entity_id": "light.nano_vdevo",
-        "alias": "테스트 1",
-        "location": "test_room_id_1"
+        "entity": "switch.otopeulreiseu_kaendeulweomeo",
+        "alias": "캔들워머",
+        "location": "id_2"
     }
 ]
