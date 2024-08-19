@@ -124,7 +124,7 @@ def schdules():
     return str(data)
 
 @app.route('/local/api/schedules/<schedule_id>', methods=["POST","DELETE", "PUT", "GET"])
-def schdules(schedule_id):
+def schdules_id(schedule_id):
     # 파일에서 기존 데이터 읽기
     try:
         with open(schedules_file_path, 'r', encoding='utf-8') as file:
