@@ -19,6 +19,7 @@ rooms_file_path = os.environ.get('rooms_file_path')
 devices_file_path = os.environ.get('devices_file_path')
 
 HA_host = os.environ.get('HA_host')
+hass_token = os.environ.get('hass_token')
 
 one_time = one_time_schedule()
 schedule_config(one_time)
@@ -35,26 +36,26 @@ app = Flask(__name__)
 
 @app.route('/local/api')
 def home():
-    headers = {"Authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJiY2E5MWY1OTJjZDg0ZmU0YTRiMWRjYTJiZWI5ZWQ4MSIsImlhdCI6MTcyMjUwMTI3NSwiZXhwIjoyMDM3ODYxMjc1fQ.TpTXTBFyuOwQY5mOVuLy4MTUGfCkZ3ZVFh7xHnprW5I"}
+    headers = {"Authorization": f"Bearer {hass_token}"}
     response = requests.get(f"{HA_host}/api/", headers=headers)
     
-    return jsonify(response.json())
+    return str(response.json())
 
 @app.route('/local/api/states')
 def states():
-    headers = {"Authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJiY2E5MWY1OTJjZDg0ZmU0YTRiMWRjYTJiZWI5ZWQ4MSIsImlhdCI6MTcyMjUwMTI3NSwiZXhwIjoyMDM3ODYxMjc1fQ.TpTXTBFyuOwQY5mOVuLy4MTUGfCkZ3ZVFh7xHnprW5I"}
+    headers = {"Authorization": f"Bearer {hass_token}"}
     response = requests.get(f"{HA_host}/api/states", headers=headers)
     return jsonify(response.json())
 
 @app.route('/local/api/states/<entity_id>')
 def statesEntityId(entity_id):
-    headers = {"Authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJiY2E5MWY1OTJjZDg0ZmU0YTRiMWRjYTJiZWI5ZWQ4MSIsImlhdCI6MTcyMjUwMTI3NSwiZXhwIjoyMDM3ODYxMjc1fQ.TpTXTBFyuOwQY5mOVuLy4MTUGfCkZ3ZVFh7xHnprW5I"}
+    headers = {"Authorization": f"Bearer {hass_token}"}
     response = requests.get(f"{HA_host}/api/states/{entity_id}", headers=headers)
     return jsonify(response.json())
 
 @app.route('/local/api/device/<entity_id>/command', methods=["POST"])
 def device_command(entity_id):
-    headers = {"Authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJiY2E5MWY1OTJjZDg0ZmU0YTRiMWRjYTJiZWI5ZWQ4MSIsImlhdCI6MTcyMjUwMTI3NSwiZXhwIjoyMDM3ODYxMjc1fQ.TpTXTBFyuOwQY5mOVuLy4MTUGfCkZ3ZVFh7xHnprW5I"}
+    headers = {"Authorization": f"Bearer {hass_token}"}
     body = {
         "entity_id": entity_id
         }
@@ -63,7 +64,7 @@ def device_command(entity_id):
 
 @app.route('/local/api/device/<entity_id>/status', methods=["GET"])
 def device_status(entity_id):
-    headers = {"Authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJiY2E5MWY1OTJjZDg0ZmU0YTRiMWRjYTJiZWI5ZWQ4MSIsImlhdCI6MTcyMjUwMTI3NSwiZXhwIjoyMDM3ODYxMjc1fQ.TpTXTBFyuOwQY5mOVuLy4MTUGfCkZ3ZVFh7xHnprW5I"}
+    headers = {"Authorization": f"Bearer {hass_token}"}
     response = requests.get(f"{HA_host}/api/states/{entity_id}", headers=headers)
     return jsonify(response.json()) 
 
@@ -96,7 +97,7 @@ def devices():
 
 @app.route('/local/api/devices/<entity_id>/status', methods=["GET"])
 def status(entity_id):
-    headers = {"Authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJiY2E5MWY1OTJjZDg0ZmU0YTRiMWRjYTJiZWI5ZWQ4MSIsImlhdCI6MTcyMjUwMTI3NSwiZXhwIjoyMDM3ODYxMjc1fQ.TpTXTBFyuOwQY5mOVuLy4MTUGfCkZ3ZVFh7xHnprW5I"}
+    headers = {"Authorization": f"Bearer {hass_token}"}
     response = requests.get(f"{HA_host}/api/states/{entity_id}", headers=headers)
     return jsonify(response.json()) 
 
