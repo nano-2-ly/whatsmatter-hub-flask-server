@@ -3,8 +3,9 @@ import websockets
 import json
 import requests
 import os
+from dotenv import load_dotenv
 
-
+load_dotenv()
 hass_token = os.environ.get('hass_token')
 
 
