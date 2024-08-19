@@ -42,7 +42,7 @@ class rule_engine() :
 
 def service(condition, domain, service, entity):
     if (checkCondition(condition)):
-        headers = {"Authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJiY2E5MWY1OTJjZDg0ZmU0YTRiMWRjYTJiZWI5ZWQ4MSIsImlhdCI6MTcyMjUwMTI3NSwiZXhwIjoyMDM3ODYxMjc1fQ.TpTXTBFyuOwQY5mOVuLy4MTUGfCkZ3ZVFh7xHnprW5I"}
+        headers = {"Authorization": f"Bearer {hass_token}"}
         body = {"entity_id": entity}
 
         response = requests.post(f"http://192.168.1.195:8123/api/services/{domain}/{service}", data=json.dumps(body), headers=headers)
@@ -51,7 +51,7 @@ def service(condition, domain, service, entity):
 
 def checkCondition(condition):
     for c in condition:
-        headers = {"Authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJiY2E5MWY1OTJjZDg0ZmU0YTRiMWRjYTJiZWI5ZWQ4MSIsImlhdCI6MTcyMjUwMTI3NSwiZXhwIjoyMDM3ODYxMjc1fQ.TpTXTBFyuOwQY5mOVuLy4MTUGfCkZ3ZVFh7xHnprW5I"}
+        headers = {"Authorization": f"Bearer {hass_token}"}
 
         response = requests.get(f"http://192.168.1.195:8123/api/states/{c['entity_id']}", headers=headers)
         response = json.loads(response.content)
