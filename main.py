@@ -37,29 +37,35 @@ app = Flask(__name__)
 def home():
     headers = {"Authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJiY2E5MWY1OTJjZDg0ZmU0YTRiMWRjYTJiZWI5ZWQ4MSIsImlhdCI6MTcyMjUwMTI3NSwiZXhwIjoyMDM3ODYxMjc1fQ.TpTXTBFyuOwQY5mOVuLy4MTUGfCkZ3ZVFh7xHnprW5I"}
     response = requests.get(f"{HA_host}/api/", headers=headers)
-    return str(response.json())
+    
+    return jsonify(response.json())
 
 @app.route('/local/api/states')
 def states():
     headers = {"Authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJiY2E5MWY1OTJjZDg0ZmU0YTRiMWRjYTJiZWI5ZWQ4MSIsImlhdCI6MTcyMjUwMTI3NSwiZXhwIjoyMDM3ODYxMjc1fQ.TpTXTBFyuOwQY5mOVuLy4MTUGfCkZ3ZVFh7xHnprW5I"}
     response = requests.get(f"{HA_host}/api/states", headers=headers)
-    return str(response.json())
+    return jsonify(response.json())
 
 @app.route('/local/api/states/<entity_id>')
 def statesEntityId(entity_id):
     headers = {"Authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJiY2E5MWY1OTJjZDg0ZmU0YTRiMWRjYTJiZWI5ZWQ4MSIsImlhdCI6MTcyMjUwMTI3NSwiZXhwIjoyMDM3ODYxMjc1fQ.TpTXTBFyuOwQY5mOVuLy4MTUGfCkZ3ZVFh7xHnprW5I"}
     response = requests.get(f"{HA_host}/api/states/{entity_id}", headers=headers)
-    return str(response.json())
+    return jsonify(response.json())
 
 @app.route('/local/api/device/<entity_id>/command', methods=["POST"])
-def service(entity_id):
+def device_command(entity_id):
     headers = {"Authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJiY2E5MWY1OTJjZDg0ZmU0YTRiMWRjYTJiZWI5ZWQ4MSIsImlhdCI6MTcyMjUwMTI3NSwiZXhwIjoyMDM3ODYxMjc1fQ.TpTXTBFyuOwQY5mOVuLy4MTUGfCkZ3ZVFh7xHnprW5I"}
     body = {
         "entity_id": entity_id
         }
     response = requests.post(f"{HA_host}/api/services/{request.json['domain']}/{request.json['service']}", data=json.dumps(body), headers=headers)
-    return str(response.json()) 
+    return jsonify(response.json()) 
 
+@app.route('/local/api/device/<entity_id>/status', methods=["GET"])
+def device_status(entity_id):
+    headers = {"Authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJiY2E5MWY1OTJjZDg0ZmU0YTRiMWRjYTJiZWI5ZWQ4MSIsImlhdCI6MTcyMjUwMTI3NSwiZXhwIjoyMDM3ODYxMjc1fQ.TpTXTBFyuOwQY5mOVuLy4MTUGfCkZ3ZVFh7xHnprW5I"}
+    response = requests.get(f"{HA_host}/api/states/{entity_id}", headers=headers)
+    return jsonify(response.json()) 
 
 @app.route('/local/api/devices', methods=["POST","DELETE", "PUT", "GET"])
 def devices():
@@ -86,13 +92,13 @@ def devices():
         json.dump(data, file, indent=4, ensure_ascii=False)
 
     schedule_config(one_time)
-    return str(data)
+    return jsonify(data)
 
 @app.route('/local/api/devices/<entity_id>/status', methods=["GET"])
 def status(entity_id):
     headers = {"Authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJiY2E5MWY1OTJjZDg0ZmU0YTRiMWRjYTJiZWI5ZWQ4MSIsImlhdCI6MTcyMjUwMTI3NSwiZXhwIjoyMDM3ODYxMjc1fQ.TpTXTBFyuOwQY5mOVuLy4MTUGfCkZ3ZVFh7xHnprW5I"}
     response = requests.get(f"{HA_host}/api/states/{entity_id}", headers=headers)
-    return str(response.json()) 
+    return jsonify(response.json()) 
 
 
 @app.route('/local/api/schedules', methods=["POST","DELETE", "PUT", "GET"])
@@ -121,7 +127,7 @@ def schdules():
         json.dump(data, file, indent=4, ensure_ascii=False)
 
     schedule_config(one_time)
-    return str(data)
+    return jsonify(data)
 
 @app.route('/local/api/schedules/<schedule_id>', methods=["POST","DELETE", "PUT", "GET"])
 def schdules_id(schedule_id):
@@ -147,7 +153,7 @@ def schdules_id(schedule_id):
         json.dump(data, file, indent=4, ensure_ascii=False)
 
     schedule_config(one_time)
-    return str(data)
+    return jsonify(data)
 
 @app.route('/local/api/rules', methods=["POST","DELETE", "PUT", "GET"])
 def rules():
@@ -175,7 +181,7 @@ def rules():
         json.dump(data, file, indent=4, ensure_ascii=False)
 
     schedule_config(one_time)
-    return str(data)
+    return jsonify(data)
 
 @app.route('/local/api/rooms', methods=["POST","DELETE", "PUT", "GET"])
 def rooms():
@@ -202,7 +208,7 @@ def rooms():
         json.dump(data, file, indent=4, ensure_ascii=False)
 
     schedule_config(one_time)
-    return str(data)
+    return jsonify(data)
     
 
 if __name__ == '__main__':

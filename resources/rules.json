@@ -18,25 +18,5 @@
             "service": "turn_on",
             "entity_id": "switch.otopeulreiseu_kaendeulweomeo"
         }
-    },
-    {
-        "id": "testRuleId1",
-        "alias": "테스트 규칙 11",
-        "trigger": {
-            "state": "off",
-            "entity_id": "switch.otopeulreiseu_kaendeulweomeo"
-        },
-        "condition": [
-            {
-                "entity_id": "light.nano_vdevo",
-                "state": "off",
-                "option": "equal"
-            }
-        ],
-        "action": {
-            "domain": "switch",
-            "service": "turn_on",
-            "entity_id": "switch.otopeulreiseu_kaendeulweomeo"
-        }
     }
 ]
