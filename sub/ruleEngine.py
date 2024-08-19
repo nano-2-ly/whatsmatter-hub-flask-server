@@ -2,12 +2,15 @@ import asyncio
 import websockets
 import json
 import requests
+import os
 
-token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJiY2E5MWY1OTJjZDg0ZmU0YTRiMWRjYTJiZWI5ZWQ4MSIsImlhdCI6MTcyMjUwMTI3NSwiZXhwIjoyMDM3ODYxMjc1fQ.TpTXTBFyuOwQY5mOVuLy4MTUGfCkZ3ZVFh7xHnprW5I"
+
+hass_token = os.environ.get('hass_token')
+
 
 auth_body = {
     "type": "auth",
-    "access_token": token
+    "access_token": hass_token
 }
 
 subscribe_body = {
