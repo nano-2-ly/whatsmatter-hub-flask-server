@@ -244,7 +244,7 @@ def notifications():
         pass
 
     # 업데이트된 데이터를 JSON 파일에 다시 저장5
-    with open(rooms_file_path, 'w', encoding='utf-8') as file:
+    with open(notifications_file_path, 'w', encoding='utf-8') as file:
         json.dump(data, file, indent=4, ensure_ascii=False)
 
     if(request.method!="GET"):
