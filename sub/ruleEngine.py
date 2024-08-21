@@ -23,7 +23,7 @@ subscribe_state_changed_body = {
 subscribe_file_changed_body = {
     "id": 19,
     "type": "subscribe_events",
-    "event_type": "notifications_file_changed"
+    "event_type": "rules_file_changed"
 }
 
 def get_rules():
