@@ -23,7 +23,15 @@ HA_host = os.environ.get('HA_host')
 hass_token = os.environ.get('hass_token')
 
 
+def config():
+    file_list = [schedules_file_path, rules_file_path, rooms_file_path, devices_file_path, notifications_file_path]
+    
+    for f in file_list:
+        if not os.path.exists(f):
+            with open(f, 'w') as f:
+                json.dump([], f)
 
+            print(f"{f} 파일이 생성되었습니다.")
 
 
 app = Flask(__name__)
@@ -254,27 +262,18 @@ def notifications():
 
 
 
-def init_scheduler():
-    one_time = one_time_schedule()
-    schedule_config(one_time)
-    p = threading.Thread(target=periodic_scheduler)
-    p.start()
-    o = threading.Thread(target=one_time_scheduler, args=[one_time])
-    o.start()
 
-def config():
-    file_list = [schedules_file_path, rules_file_path, rooms_file_path, devices_file_path, notifications_file_path]
-    
-    for f in file_list:
-        if not os.path.exists(f):
-            with open(f, 'w') as f:
-                json.dump([], f)
 
-            print(f"{f} 파일이 생성되었습니다.")
+config()
 
-    init_scheduler()
+one_time = one_time_schedule()
+schedule_config(one_time)
+p = threading.Thread(target=periodic_scheduler)
+p.start()
+o = threading.Thread(target=one_time_scheduler, args=[one_time])
+o.start()
 
 if __name__ == '__main__':
-    config()
+    
     app.run('0.0.0.0',debug=True,port=8000)
     
