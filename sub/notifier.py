@@ -26,37 +26,40 @@ subscribe_file_changed_body = {
     "event_type": "notifications_file_changed"
 }
 
-def get_rules():
-    with open('resources/rules.json', 'r', encoding='utf-8') as file:
+def get_notifications():
+    with open('resources/notifications.json', 'r', encoding='utf-8') as file:
         data = json.load(file)
 
         return data
     return [] 
 
-class rule_engine() : 
+class notifier() : 
     def __init__(self):
-        self.rules_list = get_rules()
+        self.notifications_list = get_notifications()
 
     def file_reload(self):
-        self.rules_list = get_rules()
-        
-    def add_rule(self, r):
-        self.rules_list.append(r)
+        self.notifications_list = get_notifications()
+
+    def add_noti(self, r):
+        self.notifications_list.append(r)
 
     def run_pending(self, event):
-        for rule in self.rules_list:
-            if(event['event']['data']['new_state']['entity_id'] == rule['trigger']['entity_id']):
-                if(event['event']['data']['new_state']['state'] == rule['trigger']['state']):
-                    service(rule['condition'], rule['action']['domain'], rule['action']['service'], rule['action']['entity_id'])
+        for noti in self.notifications_list:
+            if(event['event']['event_type']=="state_changed"):
+                if(event['event']['data']['new_state']['entity_id'] == noti['trigger']['entity_id']):
+                    if(event['event']['data']['new_state']['state'] == noti['trigger']['state']):
+                        notify_to_url(noti['condition'], noti['action']['url'], event)
 
-def service(condition, domain, service, entity):
+def notify_to_url(condition, url, payload):
     if (checkCondition(condition)):
         headers = {"Authorization": f"Bearer {hass_token}"}
-        body = {"entity_id": entity}
-
-        response = requests.post(f"{HA_host}/api/services/{domain}/{service}", data=json.dumps(body), headers=headers)
-        print(response)
-        print(response.content)
+        body = payload
+        try : 
+            response = requests.post(url, data=json.dumps(body), headers=headers)
+            print(response.content)
+        except : 
+            print(f"notify url({url})이 잘못되었거나, 서버가 반응이 없습니다.")
+        
 
 def checkCondition(condition):
     for c in condition:
@@ -106,10 +109,10 @@ async def subscribe(r):
             event = json.loads(response)
             if(event['type']=="event"):
                 r.run_pending(event)
-            if(event['type']=="rules_file_changed"):
+            if(event['type']=="notifications_file_changed"):
                 r.file_reload()
 
 if __name__ == "__main__":
-    r = rule_engine()
+    r = notifier()
 
     asyncio.run(subscribe(r))
