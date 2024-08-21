@@ -39,7 +39,7 @@ class rule_engine() :
 
     def file_reload(self):
         self.rules_list = get_rules()
-        
+
     def add_rule(self, r):
         self.rules_list.append(r)
 
@@ -104,9 +104,9 @@ async def subscribe(r):
             response = await websocket.recv()
             # print(f"Received from server: {response}")
             event = json.loads(response)
-            if(event['type']=="event"):
+            if(event['event']['event_type']=="state_changed"):
                 r.run_pending(event)
-            if(event['type']=="rules_file_changed"):
+            if(event['event']['event_type']=="rules_file_changed"):
                 r.file_reload()
 
 if __name__ == "__main__":

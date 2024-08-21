@@ -107,9 +107,10 @@ async def subscribe(r):
             response = await websocket.recv()
             # print(f"Received from server: {response}")
             event = json.loads(response)
-            if(event['type']=="event"):
+            if(event['event']['event_type']=="state_changed"):
                 r.run_pending(event)
-            if(event['type']=="notifications_file_changed"):
+            if(event['event']['event_type']=="notifications_file_changed"):
+                print(f"Received from server: {response}")
                 r.file_reload()
 
 if __name__ == "__main__":
