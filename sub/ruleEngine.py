@@ -46,8 +46,38 @@ class rule_engine() :
     def run_pending(self, event):
         for rule in self.rules_list:
             if(event['event']['data']['new_state']['entity_id'] == rule['trigger']['entity_id']):
-                if(event['event']['data']['new_state']['state'] == rule['trigger']['state']):
-                    service(rule['condition'], rule['action']['domain'], rule['action']['service'], rule['action']['entity_id'])
+
+                try:
+                    _option = rule['trigger']['option']
+                    
+                except KeyError:
+                    _option = "equal"
+                
+                
+                
+                if(_option == "equal"):
+                    if(event['event']['data']['new_state']['state'] == rule['trigger']['state']):
+                        service(rule['condition'], rule['action']['domain'], rule['action']['service'], rule['action']['entity_id'])
+                    return 
+                current_state = float(event['event']['data']['new_state']['state'])
+                target_state = float(rule['trigger']['state'])
+                if(_option == "greaterThan"):
+                    if(current_state > target_state):
+                        service(rule['condition'], rule['action']['domain'], rule['action']['service'], rule['action']['entity_id'])
+                    return
+                if(_option == "greaterThanOrEquals"):
+                    if(current_state >= target_state):
+                        service(rule['condition'], rule['action']['domain'], rule['action']['service'], rule['action']['entity_id'])
+                    return
+                if(_option == "lessThan"):
+                    if(current_state < target_state):
+                        service(rule['condition'], rule['action']['domain'], rule['action']['service'], rule['action']['entity_id'])
+                    return
+                if(_option == "lessThanOrEquals"):
+                    if(current_state <= target_state):
+                        service(rule['condition'], rule['action']['domain'], rule['action']['service'], rule['action']['entity_id'])
+                    return
+        return
 
 def service(condition, domain, service, entity):
     if (checkCondition(condition)):
@@ -65,17 +95,43 @@ def checkCondition(condition):
         response = requests.get(f"{HA_host}/api/states/{c['entity_id']}", headers=headers)
         response = json.loads(response.content)
 
+        current_state = response['state']
+        target_state = c['state']
         if(c['option']==""):
-            if (response['state'] == c['state']):
+            if (current_state == target_state):
                 pass
             else : 
                 return False
         if(c['option']=="equal"):
-            if (response['state'] == c['state']):
+            if (current_state == target_state):
                 pass
             else : 
                 return False
-    
+            
+        current_state = float(response['state'])
+        target_state = float(c['state'])
+        if(c['option']=="greaterThan"):
+            if (current_state > target_state):
+                pass
+            else : 
+                return False
+        if(c['option']=="greaterThanOrEquals"):
+            if (current_state >= target_state):
+                pass
+            else : 
+                return False
+        if(c['option']=="lessThan"):
+            if (current_state < target_state):
+                pass
+            else : 
+                return False
+        if(c['option']=="lessThanOrEquals"):
+            if (current_state <= target_state):
+                pass
+            else : 
+                return False
+
+
     return True
 
 
@@ -102,7 +158,7 @@ async def subscribe(r):
 
         while(1):
             response = await websocket.recv()
-            # print(f"Received from server: {response}")
+            print(f"Received from server: {response}")
             event = json.loads(response)
             if(event['event']['event_type']=="state_changed"):
                 r.run_pending(event)

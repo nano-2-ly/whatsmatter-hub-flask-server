@@ -47,11 +47,42 @@ class notifier() :
         for noti in self.notifications_list:
             if(event['event']['event_type']=="state_changed"):
                 if(event['event']['data']['new_state']['entity_id'] == noti['trigger']['entity_id']):
-                    if(event['event']['data']['new_state']['state'] == noti['trigger']['state']):
-                        notify_to_url(noti['condition'], noti['action']['url'], event)
+                    try:
+                        _option = noti['trigger']['option']
+                        
+                    except KeyError:
+                        _option = "equal"
+                    
+                    
+                    
+                    if(_option == "equal"):
+                        if(event['event']['data']['new_state']['state'] == noti['trigger']['state']):
+                            notify_to_url(noti['condition'], noti['action']['url'], event)
+                        return 
+                    
+                    current_state = float(event['event']['data']['new_state']['state'])
+                    target_state = float(noti['trigger']['state'])
+                    if(_option == "greaterThan"):
+                        if(current_state > target_state):
+                            notify_to_url(noti['condition'], noti['action']['url'], event)
+                        return 
+                    if(_option == "greaterThanOrEquals"):
+                        if(current_state >= target_state):
+                            notify_to_url(noti['condition'], noti['action']['url'], event)
+                        return 
+                    if(_option == "lessThan"):
+                        if(current_state < target_state):
+                            notify_to_url(noti['condition'], noti['action']['url'], event)
+                        return 
+                    if(_option == "lessThanOrEquals"):
+                        if(current_state <= target_state):
+                            notify_to_url(noti['condition'], noti['action']['url'], event)
+                        return 
+        return
 
 def notify_to_url(condition, url, payload):
     if (checkCondition(condition)):
+        print(payload)
         headers = {"Authorization": f"Bearer {hass_token}"}
         body = payload
         try : 
@@ -68,17 +99,42 @@ def checkCondition(condition):
         response = requests.get(f"{HA_host}/api/states/{c['entity_id']}", headers=headers)
         response = json.loads(response.content)
 
+        current_state = response['state']
+        target_state = c['state']
         if(c['option']==""):
-            if (response['state'] == c['state']):
+            if (current_state == target_state):
                 pass
             else : 
                 return False
         if(c['option']=="equal"):
-            if (response['state'] == c['state']):
+            if (current_state == target_state):
                 pass
             else : 
                 return False
-    
+            
+        current_state = float(response['state'])
+        target_state = float(c['state'])
+        if(c['option']=="greaterThan"):
+            if (current_state > target_state):
+                pass
+            else : 
+                return False
+        if(c['option']=="greaterThanOrEquals"):
+            if (current_state >= target_state):
+                pass
+            else : 
+                return False
+        if(c['option']=="lessThan"):
+            if (current_state < target_state):
+                pass
+            else : 
+                return False
+        if(c['option']=="lessThanOrEquals"):
+            if (current_state <= target_state):
+                pass
+            else : 
+                return False
+
     return True
 
 
