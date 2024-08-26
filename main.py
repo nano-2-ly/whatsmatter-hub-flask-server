@@ -45,6 +45,12 @@ def home():
     
     return str(response.json())
 
+@app.route('/local/api/services')
+def services():
+    headers = {"Authorization": f"Bearer {hass_token}"}
+    response = requests.get(f"{HA_host}/api/services", headers=headers)
+    return jsonify(response.json())
+
 @app.route('/local/api/states')
 def states():
     headers = {"Authorization": f"Bearer {hass_token}"}
