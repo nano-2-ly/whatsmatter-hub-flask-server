@@ -55,13 +55,18 @@ def checkCondition(condition):
 
 
 def service(condition, domain, service, entity):
-    if (checkCondition(condition)):
-        headers = {"Authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJiY2E5MWY1OTJjZDg0ZmU0YTRiMWRjYTJiZWI5ZWQ4MSIsImlhdCI6MTcyMjUwMTI3NSwiZXhwIjoyMDM3ODYxMjc1fQ.TpTXTBFyuOwQY5mOVuLy4MTUGfCkZ3ZVFh7xHnprW5I"}
-        body = {"entity_id": entity}
+    try : 
+        if (checkCondition(condition)):
+            headers = {"Authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJiY2E5MWY1OTJjZDg0ZmU0YTRiMWRjYTJiZWI5ZWQ4MSIsImlhdCI6MTcyMjUwMTI3NSwiZXhwIjoyMDM3ODYxMjc1fQ.TpTXTBFyuOwQY5mOVuLy4MTUGfCkZ3ZVFh7xHnprW5I"}
+            body = {"entity_id": entity}
 
-        response = requests.post(f"http://192.168.1.195:8123/api/services/{domain}/{service}", data=json.dumps(body), headers=headers)
-        print(response)
-        print(response.content)
+            response = requests.post(f"http://192.168.1.195:8123/api/services/{domain}/{service}", data=json.dumps(body), headers=headers)
+            print(response)
+            print(response.content)
+    except Exception as e:
+        # 예외가 발생했을 때 실행되는 코드
+        print(f"An error occurred: {type(e).__name__}")
+        print(f"Error details: {e}")
 
 
 

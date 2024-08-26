@@ -160,10 +160,15 @@ async def subscribe(r):
             response = await websocket.recv()
             print(f"Received from server: {response}")
             event = json.loads(response)
-            if(event['event']['event_type']=="state_changed"):
-                r.run_pending(event)
-            if(event['event']['event_type']=="rules_file_changed"):
-                r.file_reload()
+            try : 
+                if(event['event']['event_type']=="state_changed"):
+                    r.run_pending(event)
+                if(event['event']['event_type']=="rules_file_changed"):
+                    r.file_reload()
+            except Exception as e:
+                # 예외가 발생했을 때 실행되는 코드
+                print(f"An error occurred: {type(e).__name__}")
+                print(f"Error details: {e}")
 
 if __name__ == "__main__":
     r = rule_engine()
