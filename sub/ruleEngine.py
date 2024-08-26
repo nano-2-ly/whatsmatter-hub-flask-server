@@ -99,12 +99,12 @@ def checkCondition(condition):
         target_state = c['state']
         if(c['option']==""):
             if (current_state == target_state):
-                pass
+                return True
             else : 
                 return False
         if(c['option']=="equal"):
             if (current_state == target_state):
-                pass
+                return True
             else : 
                 return False
             
@@ -112,27 +112,27 @@ def checkCondition(condition):
         target_state = float(c['state'])
         if(c['option']=="greaterThan"):
             if (current_state > target_state):
-                pass
+                return True
             else : 
                 return False
         if(c['option']=="greaterThanOrEquals"):
             if (current_state >= target_state):
-                pass
+                return True
             else : 
                 return False
         if(c['option']=="lessThan"):
             if (current_state < target_state):
-                pass
+                return True
             else : 
                 return False
         if(c['option']=="lessThanOrEquals"):
             if (current_state <= target_state):
-                pass
+                return True
             else : 
                 return False
 
 
-    return True
+    return False
 
 
 
