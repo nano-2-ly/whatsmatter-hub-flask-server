@@ -69,7 +69,12 @@ def device_command(entity_id):
     body = {
         "entity_id": entity_id
         }
-    response = requests.post(f"{HA_host}/api/services/{request.json['domain']}/{request.json['service']}", data=json.dumps(body), headers=headers)
+    _r = {**request.json}
+    _r.pop('domain')
+    _r.pop('service')
+    merged_dict = {**body, **_r}
+    print(merged_dict)
+    response = requests.post(f"{HA_host}/api/services/{request.json['domain']}/{request.json['service']}", data=json.dumps(merged_dict), headers=headers)
     return jsonify(response.json()) 
 
 @app.route('/local/api/devices/<entity_id>/status', methods=["GET"])
