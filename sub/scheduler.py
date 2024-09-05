@@ -4,10 +4,12 @@ import requests
 import json
 import threading
 from datetime import datetime
+from dotenv import load_dotenv
+import os
 
-
-
-
+load_dotenv()
+HA_host = os.environ.get('HA_host')
+hass_token = os.environ.get('hass_token')
 
 class one_time_schedule():
 
@@ -35,9 +37,9 @@ class one_time_schedule():
 
 def checkCondition(condition):
     for c in condition:
-        headers = {"Authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJiY2E5MWY1OTJjZDg0ZmU0YTRiMWRjYTJiZWI5ZWQ4MSIsImlhdCI6MTcyMjUwMTI3NSwiZXhwIjoyMDM3ODYxMjc1fQ.TpTXTBFyuOwQY5mOVuLy4MTUGfCkZ3ZVFh7xHnprW5I"}
+        headers = {"Authorization": f"Bearer {hass_token}"}
 
-        response = requests.get(f"http://192.168.1.195:8123/api/states/{c['entity']}", headers=headers)
+        response = requests.get(f"{HA_host}/api/states/{c['entity']}", headers=headers)
         response = json.loads(response.content)
 
         if(c['option']==""):
@@ -57,17 +59,16 @@ def checkCondition(condition):
 def service(condition, domain, service, entity):
     try : 
         if (checkCondition(condition)):
-            headers = {"Authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJiY2E5MWY1OTJjZDg0ZmU0YTRiMWRjYTJiZWI5ZWQ4MSIsImlhdCI6MTcyMjUwMTI3NSwiZXhwIjoyMDM3ODYxMjc1fQ.TpTXTBFyuOwQY5mOVuLy4MTUGfCkZ3ZVFh7xHnprW5I"}
+            headers = {"Authorization": f"Bearer {hass_token}"}
             body = {"entity_id": entity}
 
-            response = requests.post(f"http://192.168.1.195:8123/api/services/{domain}/{service}", data=json.dumps(body), headers=headers)
+            response = requests.post(f"{HA_host}/api/services/{domain}/{service}", data=json.dumps(body), headers=headers)
             print(response)
             print(response.content)
     except Exception as e:
         # 예외가 발생했을 때 실행되는 코드
         print(f"An error occurred: {type(e).__name__}")
         print(f"Error details: {e}")
-
 
 
 def schedule_config(one_time):
