@@ -140,7 +140,7 @@ def schedule_config(one_time):
                         schedule.every(int(_schedule_data['schedule']['period']['value'])).sunday.do(service, _schedule_data['condition'], _schedule_data['action']['domain'], _schedule_data['action']['service'], _schedule_data['action']['entity_id'])
 
 
-            if(_schedule_data['schedule']['type'] == "one_time"):
+            if(_schedule_data['schedule']['type'] == "one-time"):
                 one_time.add_schedule(_schedule_data)
 
 def periodic_scheduler():
@@ -160,11 +160,10 @@ def one_time_scheduler(one_time):
 if (__name__ == "__main__"):
     one_time = one_time_schedule()
 
-    
-
     schedule_config(one_time)
-    p = threading.Thread(target=periodic_scheduler)
-    p.start()
+    # p = threading.Thread(target=periodic_scheduler)
+    # p.start()
     o = threading.Thread(target=one_time_scheduler, args=one_time)
     o.start()
 
+    
