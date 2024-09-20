@@ -46,7 +46,7 @@ app = Flask(__name__)
 
 @app.route('/test', methods=['POST'])
 def test():
-    return '!!!', 200
+    return '@@@', 200
 
 @app.route('/webhook', methods=['POST'])
 def webhook():
