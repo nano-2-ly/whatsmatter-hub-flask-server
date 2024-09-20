@@ -1,2 +1,4 @@
 resources
 *.pyc
+cert
+aws.py

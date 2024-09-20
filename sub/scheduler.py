@@ -25,8 +25,6 @@ class one_time_schedule():
             current_time = datetime.now()
             current_time = current_time.replace(second=0, microsecond=0)
 
-            print(f"current_time : {current_time}")
-            print(f"target_time : {target_time}")
             if current_time < target_time:
                 pass
             elif current_time > target_time:
@@ -154,15 +152,11 @@ def one_time_scheduler(one_time):
     prev_datetime = ''
 
     while 1:
-        
         cur_datetime = datetime.now().minute
         if(prev_datetime!=cur_datetime):
             one_time.run_pending()
             prev_datetime = cur_datetime
         time.sleep(10)
-        print("test")
-        print(prev_datetime)
-        print(cur_datetime)
 
 
 
