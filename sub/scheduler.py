@@ -154,7 +154,7 @@ def one_time_scheduler(one_time):
     
     while 1:
         one_time.run_pending()
-        time.sleep(10)
+        time.sleep(60)
 
 
 ################# start ##################
