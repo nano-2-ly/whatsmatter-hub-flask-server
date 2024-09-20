@@ -46,7 +46,7 @@ app = Flask(__name__)
 
 @app.route('/test', methods=['POST'])
 def test():
-    return '@@@', 200
+    return '!!!', 200
 
 @app.route('/webhook', methods=['POST'])
 def webhook():
@@ -58,9 +58,9 @@ def webhook():
         subprocess.run(['git', 'pull','origin','master'])
         # Flask 서버 재시작 (필요한 경우)
         try:
-            print("프로그램을 재시작합니다...")
-            time.sleep(1)  # 재시작 전 잠깐 대기 (옵션)
-            os.execv(sys.executable, ['python'] + sys.argv)
+            # print("프로그램을 재시작합니다...")
+            # time.sleep(1)  # 재시작 전 잠깐 대기 (옵션)
+            # os.execv(sys.executable, ['python'] + sys.argv)
             return 'Success', 200
         except Exception as e:
             print(f"재시작 중 에러가 발생했습니다: {e}")
@@ -314,4 +314,4 @@ o = threading.Thread(target=one_time_scheduler, args=[one_time])
 o.start()
 
 if __name__ == '__main__':
-    app.run('0.0.0.0',debug=False,port=8000)
+    app.run('0.0.0.0',debug=True,port=8000)
