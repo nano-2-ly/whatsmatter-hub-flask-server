@@ -25,6 +25,8 @@ class one_time_schedule():
             current_time = datetime.now()
             current_time = current_time.replace(second=0, microsecond=0)
 
+            print(f"current_time : {current_time}")
+            print(f"target_time : {target_time}")
             if current_time < target_time:
                 pass
             elif current_time > target_time:
