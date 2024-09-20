@@ -9,6 +9,7 @@ from sub.ruleEngine import *
 from utils import *
 from dotenv import load_dotenv
 import os
+import subprocess
 
 from utils.edit import deleteItem, file_changed_request, putItem 
 
@@ -43,7 +44,19 @@ def config():
 
 app = Flask(__name__)
 
-
+@app.route('/webhook', methods=['POST'])
+def webhook():
+    if request.method == 'POST':
+        # GitHub에서 보내는 이벤트가 맞는지 확인 (옵션)
+        data = request.json
+        if data['ref'] == 'refs/heads/main':  # main 브랜치가 업데이트된 경우
+            # git pull로 코드 업데이트
+            subprocess.run(['git', 'pull'])
+            # Flask 서버 재시작 (필요한 경우)
+            subprocess.run(['sudo', 'systemctl', 'restart', 'your-flask-service'])
+            return 'Success', 200
+        return 'No update', 200
+    return 'Invalid request', 400
 
 @app.route('/local/api', methods=["POST","DELETE", "PUT", "GET"])
 def home():
