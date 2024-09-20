@@ -60,8 +60,8 @@ def webhook():
         try:
             print("프로그램을 재시작합니다...")
             time.sleep(1)  # 재시작 전 잠깐 대기 (옵션)
-            return 'Success', 200
             os.execv(sys.executable, ['python'] + sys.argv)
+            return 'Success', 200
         except Exception as e:
             print(f"재시작 중 에러가 발생했습니다: {e}")
             return 'No update', 200
