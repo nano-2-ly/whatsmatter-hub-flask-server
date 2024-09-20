@@ -8,7 +8,7 @@ from sub.scheduler import *
 from sub.ruleEngine import *
 from utils import *
 from dotenv import load_dotenv
-import os
+import os, sys
 import subprocess
 
 from utils.edit import deleteItem, file_changed_request, putItem 
@@ -57,7 +57,12 @@ def webhook():
             # git pull로 코드 업데이트
         subprocess.run(['git', 'pull','origin','master'])
         # Flask 서버 재시작 (필요한 경우)
-        subprocess.run(['python3', 'main.py'])
+        try:
+            print("프로그램을 재시작합니다...")
+            time.sleep(1)  # 재시작 전 잠깐 대기 (옵션)
+            os.execv(sys.executable, ['python'] + sys.argv)
+        except Exception as e:
+            print(f"재시작 중 에러가 발생했습니다: {e}")
         return 'Success', 200
         return 'No update', 200
     return 'Invalid request', 400
