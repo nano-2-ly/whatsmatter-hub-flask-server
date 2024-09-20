@@ -57,7 +57,7 @@ def webhook():
             # git pull로 코드 업데이트
         subprocess.run(['git', 'pull','origin','master'])
         # Flask 서버 재시작 (필요한 경우)
-        # subprocess.run(['python3', 'main.py'])
+        subprocess.run(['python3', 'main.py'])
         return 'Success', 200
         return 'No update', 200
     return 'Invalid request', 400
