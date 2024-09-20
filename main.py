@@ -46,7 +46,7 @@ app = Flask(__name__)
 
 @app.route('/test', methods=['POST'])
 def test():
-    return 'Success!!', 200
+    return 'Success!!@@#!', 200
 
 @app.route('/webhook', methods=['POST'])
 def webhook():
