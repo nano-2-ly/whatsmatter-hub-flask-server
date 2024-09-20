@@ -13,6 +13,7 @@ import os
 from utils.edit import deleteItem, file_changed_request, putItem 
 
 load_dotenv()
+res_file_path= os.environ.get('res_file_path')
 schedules_file_path = os.environ.get('schedules_file_path')
 rules_file_path = os.environ.get('rules_file_path')
 rooms_file_path = os.environ.get('rooms_file_path')
@@ -24,6 +25,12 @@ hass_token = os.environ.get('hass_token')
 
 
 def config():
+
+    if not os.path.exists(res_file_path):
+        os.makedirs(res_file_path)
+        print(f"폴더 생성: {res_file_path}")
+
+
     file_list = [schedules_file_path, rules_file_path, rooms_file_path, devices_file_path, notifications_file_path]
     
     for f in file_list:
