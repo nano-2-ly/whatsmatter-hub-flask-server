@@ -151,10 +151,19 @@ def periodic_scheduler():
         time.sleep(1)
 
 def one_time_scheduler(one_time):
-    
+    prev_datetime = ''
+
     while 1:
-        one_time.run_pending()
-        time.sleep(60)
+        
+        cur_datetime = datetime.now().minute
+        if(prev_datetime!=cur_datetime):
+            one_time.run_pending()
+            prev_datetime = cur_datetime
+        time.sleep(10)
+        print("test")
+        print(prev_datetime)
+        print(cur_datetime)
+
 
 
 ################# start ##################
