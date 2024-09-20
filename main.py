@@ -49,7 +49,7 @@ def webhook():
     if request.method == 'POST':
         # GitHub에서 보내는 이벤트가 맞는지 확인 (옵션)
         data = request.json
-        if data['ref'] == 'refs/heads/main':  # main 브랜치가 업데이트된 경우
+        if data['ref'] == 'refs/heads/master':  # main 브랜치가 업데이트된 경우
             # git pull로 코드 업데이트
             subprocess.run(['git', 'pull'])
             # Flask 서버 재시작 (필요한 경우)
