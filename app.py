@@ -141,11 +141,11 @@ def devices():
         new_data = request.json
         data.append(new_data)
     if request.method == "DELETE":
-        target_value =  request.json['entity']
-        data = deleteItem(data, "entity", target_value)
+        target_value =  request.json['entity_id']
+        data = deleteItem(data, "entity_id", target_value)
     if request.method == "PUT":
-        target_value =  request.json['entity']
-        data = putItem(data, "entity", target_value, request.json)
+        target_value =  request.json['entity_id']
+        data = putItem(data, "entity_id", target_value, request.json)
     if request.method == "GET":
         pass
 
