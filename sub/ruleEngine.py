@@ -89,6 +89,8 @@ def service(condition, domain, service, entity):
         print(response.content)
 
 def checkCondition(condition):
+    if(condition ==[]) : 
+        return True
     for c in condition:
         headers = {"Authorization": f"Bearer {hass_token}"}
 
