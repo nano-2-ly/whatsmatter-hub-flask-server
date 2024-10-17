@@ -6,12 +6,11 @@ import json
 import threading
 from sub.scheduler import *
 from sub.ruleEngine import *
-from utils import *
 from dotenv import load_dotenv
 import os, sys
 import subprocess
 
-from utils.edit import deleteItem, file_changed_request, putItem 
+from libs.edit import deleteItem, file_changed_request, putItem  # type: ignore
 
 load_dotenv()
 res_file_path= os.environ.get('res_file_path')

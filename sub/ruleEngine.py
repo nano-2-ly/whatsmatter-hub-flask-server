@@ -142,36 +142,41 @@ def checkCondition(condition):
 
 async def subscribe(r):
     uri = f"ws://{HA_host.replace("http://","")}/api/websocket"
-    async with websockets.connect(uri) as websocket:
-        response = await websocket.recv()
-        print(f"Received from server: {response}")
+    while(1):
+        try:
+            async with websockets.connect(uri) as websocket:
+                response = await websocket.recv()
+                print(f"Received from server: {response}")
 
-        await websocket.send(json.dumps(auth_body))
-        response = await websocket.recv()
-        print(f"Received from server: {response}")
+                await websocket.send(json.dumps(auth_body))
+                response = await websocket.recv()
+                print(f"Received from server: {response}")
 
-        await websocket.send(json.dumps(subscribe_state_changed_body))
-        response = await websocket.recv()
-        print(f"Received from server: {response}")
+                await websocket.send(json.dumps(subscribe_state_changed_body))
+                response = await websocket.recv()
+                print(f"Received from server: {response}")
 
-        await websocket.send(json.dumps(subscribe_file_changed_body))
-        response = await websocket.recv()
-        print(f"Received from server: {response}")
+                await websocket.send(json.dumps(subscribe_file_changed_body))
+                response = await websocket.recv()
+                print(f"Received from server: {response}")
 
-        while(1):
-            response = await websocket.recv()
-            print(f"Received from server: {response}")
-            event = json.loads(response)
-            try : 
-                if(event['event']['event_type']=="state_changed"):
-                    r.run_pending(event)
-                if(event['event']['event_type']=="rules_file_changed"):
-                    r.file_reload()
-            except Exception as e:
-                # 예외가 발생했을 때 실행되는 코드
-                print(f"An error occurred: {type(e).__name__}")
-                print(f"Error details: {e}")
-
+                while(1):
+                    response = await websocket.recv()
+                    print(f"Received from server: {response}")
+                    event = json.loads(response)
+                    try : 
+                        if(event['event']['event_type']=="state_changed"):
+                            r.run_pending(event)
+                        if(event['event']['event_type']=="rules_file_changed"):
+                            r.file_reload()
+                    except Exception as e:
+                        # 예외가 발생했을 때 실행되는 코드
+                        print(f"An error occurred: {type(e).__name__}")
+                        print(f"Error details: {e}")
+        except Exception as e:
+            # 예외가 발생했을 때 실행되는 코드
+            print(f"An error occurred: {type(e).__name__}")
+            print(f"Error details: {e}")
 if __name__ == "__main__":
     r = rule_engine()
 
