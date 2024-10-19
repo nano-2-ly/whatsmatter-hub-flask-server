@@ -71,6 +71,7 @@ def ota_callback(client, userdata, message):
         print("프로그램을 재시작합니다...")
         time.sleep(10)  # 재시작 전 잠깐 대기 (옵션)
         command_with_sudo = f'echo matterhub | sudo -S reboot'
+        subprocess.run(command_with_sudo, shell=True)
         return 'Success', 200
     except Exception as e:
         print(f"재시작 중 에러가 발생했습니다: {e}")
