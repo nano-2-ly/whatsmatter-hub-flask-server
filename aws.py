@@ -312,8 +312,16 @@ o = threading.Thread(target=one_time_scheduler, args=[one_time])
 o.start()
 
 # MQTT 연결
-mqtt_client.connect()
 
+while True:
+        try:
+            mqtt_client.connect()
+            print("Reconnected to AWS IoT")
+            break
+        except Exception as e:
+            print(f"Reconnection failed: {e}")
+            time.sleep(5)
+            
 # 구독(subscribe)
 mqtt_client.subscribe("sdk/test/python", 1, message_callback)
 mqtt_client.subscribe(f"matterhub/{matterhub_id}/api/request", 1, api_reqeust_callback)
