@@ -68,9 +68,9 @@ def ota_callback(client, userdata, message):
     print(f"Received message: {message.payload.decode('utf-8')} from topic: {message.topic}")
     subprocess.run(['git', 'pull','origin','master'])
     try:
-        # print("프로그램을 재시작합니다...")
-        # time.sleep(1)  # 재시작 전 잠깐 대기 (옵션)
-        # os.execv(sys.executable, ['python'] + sys.argv)
+        print("프로그램을 재시작합니다...")
+        time.sleep(10)  # 재시작 전 잠깐 대기 (옵션)
+        subprocess.run(['reboot'])
         return 'Success', 200
     except Exception as e:
         print(f"재시작 중 에러가 발생했습니다: {e}")
