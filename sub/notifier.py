@@ -1,4 +1,5 @@
 import asyncio
+import time
 import websockets
 import json
 import requests
@@ -179,6 +180,7 @@ async def subscribe(r):
         # 예외가 발생했을 때 실행되는 코드
         print(f"An error occurred: {type(e).__name__}")
         print(f"Error details: {e}")
+        time.sleep(5)
 if __name__ == "__main__":
     r = notifier()
 
