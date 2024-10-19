@@ -1,4 +1,5 @@
 import json
+import subprocess
 import threading
 import time
 from AWSIoTPythonSDK.MQTTLib import AWSIoTMQTTClient
@@ -7,7 +8,7 @@ from dotenv import load_dotenv
 import requests
 
 from sub.scheduler import one_time_schedule, one_time_scheduler, periodic_scheduler, schedule_config
-from utils.edit import deleteItem, putItem
+from libs.edit import deleteItem, file_changed_request, putItem  # type: ignore
 
 load_dotenv()
 res_file_path= os.environ.get('res_file_path')
@@ -22,7 +23,7 @@ hass_token = os.environ.get('hass_token')
 matterhub_id = os.environ.get('matterhub_id')
 
 # AWS IoT Core의 Thing 이름, 엔드포인트, 포트, 인증서 경로 등을 설정
-thing_name = "basicPubSub"
+thing_name = matterhub_id
 host = "a2zr6a6gzb5fod-ats.iot.ap-northeast-2.amazonaws.com"
 root_ca = "./cert/root-CA.crt"
 private_key = "./cert/matterHub.private.key"
@@ -61,6 +62,20 @@ def check_dynamic_endpoint(target_endpoint, endpoint, target_method, method):
                 return False
     
     return url_var_list
+
+
+def ota_callback(client, userdata, message):
+    print(f"Received message: {message.payload.decode('utf-8')} from topic: {message.topic}")
+    subprocess.run(['git', 'pull','origin','master'])
+    try:
+        # print("프로그램을 재시작합니다...")
+        # time.sleep(1)  # 재시작 전 잠깐 대기 (옵션)
+        # os.execv(sys.executable, ['python'] + sys.argv)
+        return 'Success', 200
+    except Exception as e:
+        print(f"재시작 중 에러가 발생했습니다: {e}")
+        return 'No update', 200
+    return 'Invalid request', 400
 
 # 메시지 콜백 함수
 def message_callback(client, userdata, message):
@@ -302,6 +317,7 @@ mqtt_client.connect()
 # 구독(subscribe)
 mqtt_client.subscribe("sdk/test/python", 1, message_callback)
 mqtt_client.subscribe(f"matterhub/{matterhub_id}/api/request", 1, api_reqeust_callback)
+mqtt_client.subscribe(f"matterhub/ota", 1, ota_callback)
 
 # 퍼블리시(publish) 테스트
 def publish_message(topic, message):

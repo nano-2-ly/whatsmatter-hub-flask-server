@@ -16,14 +16,17 @@ import json
 import threading
 from sub.scheduler import *
 from sub.ruleEngine import *
-from dotenv import load_dotenv
+from dotenv import load_dotenv, find_dotenv
 import os, sys
 import subprocess
 
 from libs.edit import deleteItem, file_changed_request, putItem  # type: ignore
 
+env_file = find_dotenv()
 load_dotenv()
+
 res_file_path= os.environ.get('res_file_path')
+cert_file_path= os.environ.get('cert_file_path')
 schedules_file_path = os.environ.get('schedules_file_path')
 rules_file_path = os.environ.get('rules_file_path')
 rooms_file_path = os.environ.get('rooms_file_path')
@@ -40,6 +43,9 @@ def config():
         os.makedirs(res_file_path)
         print(f"폴더 생성: {res_file_path}")
 
+    if not os.path.exists(cert_file_path):
+        os.makedirs(cert_file_path)
+        print(f"폴더 생성: {cert_file_path}")
 
     file_list = [schedules_file_path, rules_file_path, rooms_file_path, devices_file_path, notifications_file_path]
     
@@ -51,12 +57,30 @@ def config():
             print(f"{f} 파일이 생성되었습니다.")
 
 
+
 app = Flask(__name__)
 
 @app.route('/test', methods=['POST'])
 def test():
     return '@@@', 200
 
+@app.route('/local/api/config/aws/cert', methods=["POST","DELETE", "PUT"])
+def configAwsCert():
+    root_ca = request.json["root_ca"]
+    certificate = request.json["certificate"]
+    private_key = request.json["private_key"]
+
+    # 업데이트된 데이터를 JSON 파일에 다시 저장5
+    with open('./cert/root-CA.crt', 'w', encoding='utf-8') as file:
+        file.write(root_ca)
+    with open('./cert/matterHub.cert.pem', 'w', encoding='utf-8') as file:
+        file.write(certificate)
+    with open('./cert/matterHub.private.key', 'w', encoding='utf-8') as file:
+        file.write(private_key)
+
+    return 'Success', 200
+    
+    
 @app.route('/webhook', methods=['POST'])
 def webhook():
     if request.method == 'POST':
