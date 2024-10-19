@@ -70,7 +70,7 @@ def ota_callback(client, userdata, message):
     try:
         print("프로그램을 재시작합니다...")
         time.sleep(10)  # 재시작 전 잠깐 대기 (옵션)
-        subprocess.run(['reboot'])
+        command_with_sudo = f'echo matterhub | sudo -S reboot'
         return 'Success', 200
     except Exception as e:
         print(f"재시작 중 에러가 발생했습니다: {e}")
@@ -314,14 +314,14 @@ o.start()
 # MQTT 연결
 
 while True:
-        try:
-            mqtt_client.connect()
-            print("Reconnected to AWS IoT")
-            break
-        except Exception as e:
-            print(f"Reconnection failed: {e}")
-            time.sleep(5)
-            
+    try:
+        mqtt_client.connect()
+        print("Reconnected to AWS IoT")
+        break
+    except Exception as e:
+        print(f"Reconnection failed: {e}")
+        time.sleep(5)
+
 # 구독(subscribe)
 mqtt_client.subscribe("sdk/test/python", 1, message_callback)
 mqtt_client.subscribe(f"matterhub/{matterhub_id}/api/request", 1, api_reqeust_callback)
