@@ -100,3 +100,22 @@ def file_changed_request(event_type):
 
     response = requests.post(f"{HA_host}/api/events/{event_type}", headers=headers)
     return response
+
+def update_env_file(env_file_path, key, value):
+    # .env 파일 읽기
+    with open(env_file_path, 'r') as file:
+        lines = file.readlines()
+
+    # 파일의 내용을 수정
+    key_found = False
+    with open(env_file_path, 'w') as file:
+        for line in lines:
+            if line.startswith(f'{key}='):
+                file.write(f'{key}={value}\n')  # 키 값 변경
+                key_found = True
+            else:
+                file.write(line)  # 변경되지 않은 줄은 그대로 기록
+
+        # 키가 기존에 존재하지 않으면, 새로 추가
+        if not key_found:
+            file.write(f'{key}={value}\n')

@@ -20,7 +20,7 @@ from dotenv import load_dotenv, find_dotenv
 import os, sys
 import subprocess
 
-from libs.edit import deleteItem, file_changed_request, putItem  # type: ignore
+from libs.edit import deleteItem, file_changed_request, putItem, update_env_file  # type: ignore
 
 env_file = find_dotenv()
 load_dotenv()
@@ -63,6 +63,15 @@ app = Flask(__name__)
 @app.route('/test', methods=['POST'])
 def test():
     return '@@@', 200
+
+@app.route('/local/api/config/ha/cert', methods=["POST","DELETE", "PUT"])
+def configHACert():
+    hass_token = request.json["hass_token"]
+
+    env_file_path = '.env'
+    update_env_file(env_file_path, 'hass_token', hass_token)
+
+    return 'Success', 200
 
 @app.route('/local/api/config/aws/cert', methods=["POST","DELETE", "PUT"])
 def configAwsCert():
