@@ -3,6 +3,7 @@ Description=matterhub
 After=network.target
 
 [Service]
+User=matterhub
 WorkingDirectory=/home/matterhub/Desktop
 ExecStart=sh /home/matterhub/Desktop/matterhub/matterhub.sh
 Restart=always
