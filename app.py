@@ -89,7 +89,17 @@ def configAwsCert():
 
     return 'Success', 200
     
-    
+@app.route('/local/api/config/aws/id', methods=["POST","DELETE", "PUT"])
+def configAwsId():
+    matterhub_id = request.json["matterhub_id"]
+    certificate = request.json["certificate"]
+    private_key = request.json["private_key"]
+
+    env_file_path = '.env'
+    update_env_file(env_file_path, 'matterhub_id', matterhub_id)
+
+    return 'Success', 200
+
 @app.route('/webhook', methods=['POST'])
 def webhook():
     if request.method == 'POST':
