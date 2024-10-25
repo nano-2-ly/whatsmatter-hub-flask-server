@@ -33,6 +33,8 @@ def get_rules():
         return data
     return [] 
 
+
+
 class rule_engine() : 
     def __init__(self):
         self.rules_list = get_rules()
@@ -57,27 +59,35 @@ class rule_engine() :
                 
                 if(_option == "equal"):
                     if(event['event']['data']['new_state']['state'] == rule['trigger']['state']):
-                        service(rule['condition'], rule['action']['domain'], rule['action']['service'], rule['action']['entity_id'])
+                        executeActions(rule)
                     return 
                 current_state = float(event['event']['data']['new_state']['state'])
                 target_state = float(rule['trigger']['state'])
                 if(_option == "greaterThan"):
                     if(current_state > target_state):
-                        service(rule['condition'], rule['action']['domain'], rule['action']['service'], rule['action']['entity_id'])
+                        executeActions(rule)
                     return
                 if(_option == "greaterThanOrEquals"):
                     if(current_state >= target_state):
-                        service(rule['condition'], rule['action']['domain'], rule['action']['service'], rule['action']['entity_id'])
+                        executeActions(rule)
                     return
                 if(_option == "lessThan"):
                     if(current_state < target_state):
-                        service(rule['condition'], rule['action']['domain'], rule['action']['service'], rule['action']['entity_id'])
+                        executeActions(rule)
                     return
                 if(_option == "lessThanOrEquals"):
                     if(current_state <= target_state):
-                        service(rule['condition'], rule['action']['domain'], rule['action']['service'], rule['action']['entity_id'])
+                        executeActions(rule)
                     return
         return
+
+def executeActions(rule):
+    if isinstance(rule['action'], dict):
+        service(rule['condition'], rule['action']['domain'], rule['action']['service'], rule['action']['entity_id'])
+    if isinstance(rule['action'], list):
+        for r in rule['action']:
+            service(rule['condition'], r['domain'], r['service'], r['entity_id'])
+
 
 def service(condition, domain, service, entity):
     if (checkCondition(condition)):

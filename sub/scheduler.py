@@ -56,6 +56,14 @@ def checkCondition(condition):
     return True
 
 
+def executeActions(schedule):
+    if isinstance(schedule['action'], dict):
+        service(schedule['condition'], schedule['action']['domain'], schedule['action']['service'], schedule['action']['entity_id'])
+    if isinstance(schedule['action'], list):
+        for r in schedule['action']:
+            service(schedule['condition'], r['domain'], r['service'], r['entity_id'])
+
+
 def service(condition, domain, service, entity):
     try : 
         if (checkCondition(condition)):
@@ -80,64 +88,64 @@ def schedule_config(one_time):
             if(_schedule_data['schedule']['type'] == "periodic"):
                 if(_schedule_data['schedule']['period']['rate'] == "seconds"):
                     if(_schedule_data['schedule']['period']['at'] != ""):
-                        schedule.every(int(_schedule_data['schedule']['period']['value'])).seconds.at(_schedule_data['schedule']['period']['at']).do(service, _schedule_data['condition'], _schedule_data['action']['domain'], _schedule_data['action']['service'], _schedule_data['action']['entity_id'])
+                        schedule.every(int(_schedule_data['schedule']['period']['value'])).seconds.at(_schedule_data['schedule']['period']['at']).do(executeActions,_schedule_data)
                     else:
-                        schedule.every(int(_schedule_data['schedule']['period']['value'])).seconds.do(service, _schedule_data['condition'], _schedule_data['action']['domain'], _schedule_data['action']['service'], _schedule_data['action']['entity_id'])
+                        schedule.every(int(_schedule_data['schedule']['period']['value'])).seconds.do(executeActions,_schedule_data)
                 if(_schedule_data['schedule']['period']['rate'] == "minutes"):
                     if(_schedule_data['schedule']['period']['at'] != ""):
-                        schedule.every(int(_schedule_data['schedule']['period']['value'])).minutes.at(_schedule_data['schedule']['period']['at']).do(service, _schedule_data['condition'], _schedule_data['action']['domain'], _schedule_data['action']['service'], _schedule_data['action']['entity_id'])
+                        schedule.every(int(_schedule_data['schedule']['period']['value'])).minutes.at(_schedule_data['schedule']['period']['at']).do(executeActions,_schedule_data)
                     else:
-                        schedule.every(int(_schedule_data['schedule']['period']['value'])).minutes.do(service, _schedule_data['condition'], _schedule_data['action']['domain'], _schedule_data['action']['service'], _schedule_data['action']['entity_id'])
+                        schedule.every(int(_schedule_data['schedule']['period']['value'])).minutes.do(executeActions,_schedule_data)
                 if(_schedule_data['schedule']['period']['rate'] == "hours"):
                     if(_schedule_data['schedule']['period']['at'] != ""):
-                        schedule.every(int(_schedule_data['schedule']['period']['value'])).hours.at(_schedule_data['schedule']['period']['at']).do(service, _schedule_data['condition'], _schedule_data['action']['domain'], _schedule_data['action']['service'], _schedule_data['action']['entity_id'])
+                        schedule.every(int(_schedule_data['schedule']['period']['value'])).hours.at(_schedule_data['schedule']['period']['at']).do(executeActions,_schedule_data)
                     else:
-                        schedule.every(int(_schedule_data['schedule']['period']['value'])).hours.do(service, _schedule_data['condition'], _schedule_data['action']['domain'], _schedule_data['action']['service'], _schedule_data['action']['entity_id'])
+                        schedule.every(int(_schedule_data['schedule']['period']['value'])).hours.do(executeActions,_schedule_data)
                 if(_schedule_data['schedule']['period']['rate'] == "days"):
                     if(_schedule_data['schedule']['period']['at'] != ""):
-                        schedule.every(int(_schedule_data['schedule']['period']['value'])).days.at(_schedule_data['schedule']['period']['at']).do(service, _schedule_data['condition'], _schedule_data['action']['domain'], _schedule_data['action']['service'], _schedule_data['action']['entity_id'])
+                        schedule.every(int(_schedule_data['schedule']['period']['value'])).days.at(_schedule_data['schedule']['period']['at']).do(executeActions,_schedule_data)
                     else:
-                        schedule.every(int(_schedule_data['schedule']['period']['value'])).days.do(service, _schedule_data['condition'], _schedule_data['action']['domain'], _schedule_data['action']['service'], _schedule_data['action']['entity_id'])
+                        schedule.every(int(_schedule_data['schedule']['period']['value'])).days.do(executeActions,_schedule_data)
                 if(_schedule_data['schedule']['period']['rate'] == "weeks"):
                     if(_schedule_data['schedule']['period']['at'] != ""):
-                        schedule.every(int(_schedule_data['schedule']['period']['value'])).weeks.at(_schedule_data['schedule']['period']['at']).do(service, _schedule_data['condition'], _schedule_data['action']['domain'], _schedule_data['action']['service'], _schedule_data['action']['entity_id'])
+                        schedule.every(int(_schedule_data['schedule']['period']['value'])).weeks.at(_schedule_data['schedule']['period']['at']).do(executeActions,_schedule_data)
                     else:
-                        schedule.every(int(_schedule_data['schedule']['period']['value'])).weeks.do(service, _schedule_data['condition'], _schedule_data['action']['domain'], _schedule_data['action']['service'], _schedule_data['action']['entity_id'])
+                        schedule.every(int(_schedule_data['schedule']['period']['value'])).weeks.do(executeActions,_schedule_data)
                 if(_schedule_data['schedule']['period']['rate'] == "monday"):
                     if(_schedule_data['schedule']['period']['at'] != ""):
-                        schedule.every(int(_schedule_data['schedule']['period']['value'])).monday.at(_schedule_data['schedule']['period']['at']).do(service, _schedule_data['condition'], _schedule_data['action']['domain'], _schedule_data['action']['service'], _schedule_data['action']['entity_id'])
+                        schedule.every(int(_schedule_data['schedule']['period']['value'])).monday.at(_schedule_data['schedule']['period']['at']).do(executeActions,_schedule_data)
                     else:
-                        schedule.every(int(_schedule_data['schedule']['period']['value'])).monday.do(service, _schedule_data['condition'], _schedule_data['action']['domain'], _schedule_data['action']['service'], _schedule_data['action']['entity_id'])
+                        schedule.every(int(_schedule_data['schedule']['period']['value'])).monday.do(executeActions,_schedule_data)
                 if(_schedule_data['schedule']['period']['rate'] == "tuesday"):
                     if(_schedule_data['schedule']['period']['at'] != ""):
-                        schedule.every(int(_schedule_data['schedule']['period']['value'])).tuesday.at(_schedule_data['schedule']['period']['at']).do(service, _schedule_data['condition'], _schedule_data['action']['domain'], _schedule_data['action']['service'], _schedule_data['action']['entity_id'])
+                        schedule.every(int(_schedule_data['schedule']['period']['value'])).tuesday.at(_schedule_data['schedule']['period']['at']).do(executeActions,_schedule_data)
                     else:
-                        schedule.every(int(_schedule_data['schedule']['period']['value'])).tuesday.do(service, _schedule_data['condition'], _schedule_data['action']['domain'], _schedule_data['action']['service'], _schedule_data['action']['entity_id'])
+                        schedule.every(int(_schedule_data['schedule']['period']['value'])).tuesday.do(executeActions,_schedule_data)
                 if(_schedule_data['schedule']['period']['rate'] == "wednesday"):
                     if(_schedule_data['schedule']['period']['at'] != ""):
-                        schedule.every(int(_schedule_data['schedule']['period']['value'])).wednesday.at(_schedule_data['schedule']['period']['at']).do(service, _schedule_data['condition'], _schedule_data['action']['domain'], _schedule_data['action']['service'], _schedule_data['action']['entity_id'])
+                        schedule.every(int(_schedule_data['schedule']['period']['value'])).wednesday.at(_schedule_data['schedule']['period']['at']).do(executeActions,_schedule_data)
                     else:
-                        schedule.every(int(_schedule_data['schedule']['period']['value'])).wednesday.do(service, _schedule_data['condition'], _schedule_data['action']['domain'], _schedule_data['action']['service'], _schedule_data['action']['entity_id'])
+                        schedule.every(int(_schedule_data['schedule']['period']['value'])).wednesday.do(executeActions,_schedule_data)
                 if(_schedule_data['schedule']['period']['rate'] == "thursday"):
                     if(_schedule_data['schedule']['period']['at'] != ""):
-                        schedule.every(int(_schedule_data['schedule']['period']['value'])).thursday.at(_schedule_data['schedule']['period']['at']).do(service, _schedule_data['condition'], _schedule_data['action']['domain'], _schedule_data['action']['service'], _schedule_data['action']['entity_id'])
+                        schedule.every(int(_schedule_data['schedule']['period']['value'])).thursday.at(_schedule_data['schedule']['period']['at']).do(executeActions,_schedule_data)
                     else:
-                        schedule.every(int(_schedule_data['schedule']['period']['value'])).thursday.do(service, _schedule_data['condition'], _schedule_data['action']['domain'], _schedule_data['action']['service'], _schedule_data['action']['entity_id'])
+                        schedule.every(int(_schedule_data['schedule']['period']['value'])).thursday.do(executeActions,_schedule_data)
                 if(_schedule_data['schedule']['period']['rate'] == "friday"):
                     if(_schedule_data['schedule']['period']['at'] != ""):
-                        schedule.every(int(_schedule_data['schedule']['period']['value'])).friday.at(_schedule_data['schedule']['period']['at']).do(service, _schedule_data['condition'], _schedule_data['action']['domain'], _schedule_data['action']['service'], _schedule_data['action']['entity_id'])
+                        schedule.every(int(_schedule_data['schedule']['period']['value'])).friday.at(_schedule_data['schedule']['period']['at']).do(executeActions,_schedule_data)
                     else:
-                        schedule.every(int(_schedule_data['schedule']['period']['value'])).friday.do(service, _schedule_data['condition'], _schedule_data['action']['domain'], _schedule_data['action']['service'], _schedule_data['action']['entity_id'])
+                        schedule.every(int(_schedule_data['schedule']['period']['value'])).friday.do(executeActions,_schedule_data)
                 if(_schedule_data['schedule']['period']['rate'] == "saturday"):
                     if(_schedule_data['schedule']['period']['at'] != ""):
-                        schedule.every(int(_schedule_data['schedule']['period']['value'])).saturday.at(_schedule_data['schedule']['period']['at']).do(service, _schedule_data['condition'], _schedule_data['action']['domain'], _schedule_data['action']['service'], _schedule_data['action']['entity_id'])
+                        schedule.every(int(_schedule_data['schedule']['period']['value'])).saturday.at(_schedule_data['schedule']['period']['at']).do(executeActions,_schedule_data)
                     else:
-                        schedule.every(int(_schedule_data['schedule']['period']['value'])).saturday.do(service, _schedule_data['condition'], _schedule_data['action']['domain'], _schedule_data['action']['service'], _schedule_data['action']['entity_id'])
+                        schedule.every(int(_schedule_data['schedule']['period']['value'])).saturday.do(executeActions,_schedule_data)
                 if(_schedule_data['schedule']['period']['rate'] == "sunday"):
                     if(_schedule_data['schedule']['period']['at'] != ""):
-                        schedule.every(int(_schedule_data['schedule']['period']['value'])).sunday.at(_schedule_data['schedule']['period']['at']).do(service, _schedule_data['condition'], _schedule_data['action']['domain'], _schedule_data['action']['service'], _schedule_data['action']['entity_id'])
+                        schedule.every(int(_schedule_data['schedule']['period']['value'])).sunday.at(_schedule_data['schedule']['period']['at']).do(executeActions,_schedule_data)
                     else:
-                        schedule.every(int(_schedule_data['schedule']['period']['value'])).sunday.do(service, _schedule_data['condition'], _schedule_data['action']['domain'], _schedule_data['action']['service'], _schedule_data['action']['entity_id'])
+                        schedule.every(int(_schedule_data['schedule']['period']['value'])).sunday.do(executeActions,_schedule_data)
 
 
             if(_schedule_data['schedule']['type'] == "one-time"):
@@ -166,9 +174,9 @@ if (__name__ == "__main__"):
     one_time = one_time_schedule()
 
     schedule_config(one_time)
-    # p = threading.Thread(target=periodic_scheduler)
-    # p.start()
-    o = threading.Thread(target=one_time_scheduler, args=one_time)
+    p = threading.Thread(target=periodic_scheduler)
+    p.start()
+    o = threading.Thread(target=one_time_scheduler, args=(one_time,))
     o.start()
 
     
