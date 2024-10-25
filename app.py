@@ -221,6 +221,7 @@ def schdules():
     
     if request.method == "POST":
         new_data = request.json
+        new_data.setdefault('activate', True)
         data.append(new_data)
     if request.method == "DELETE":
         target_value =  request.json['id']
@@ -250,6 +251,7 @@ def schdules_id(schedule_id):
 
     if request.method == "POST":
         new_data = request.json
+        new_data.setdefault('activate', True)
         data.append(new_data)
     if request.method == "DELETE":
         data = deleteItem(data, "id", schedule_id)
@@ -278,6 +280,7 @@ def rules():
 
     if request.method == "POST":
         new_data = request.json
+        new_data.setdefault('activate', True)
         data.append(new_data)
     if request.method == "DELETE":
         target_value =  request.json['id']
@@ -306,6 +309,7 @@ def rooms():
 
     if request.method == "POST":
         new_data = request.json
+        new_data.setdefault('activate', True)
         data.append(new_data)
     if request.method == "DELETE":
         target_value =  request.json['id']

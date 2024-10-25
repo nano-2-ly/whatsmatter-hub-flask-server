@@ -47,6 +47,9 @@ class rule_engine() :
 
     def run_pending(self, event):
         for rule in self.rules_list:
+            if(not rule['activate']):
+                continue
+
             if(event['event']['data']['new_state']['entity_id'] == rule['trigger']['entity_id']):
 
                 try:

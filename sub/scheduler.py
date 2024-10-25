@@ -85,6 +85,8 @@ def schedule_config(one_time):
     with open('resources/schedule.json', 'r', encoding='utf-8') as file:
         data = json.load(file)  # JSON 파일을 파싱하여 Python 객체로 변환
         for _schedule_data in data:
+            if(not _schedule_data['activate']):
+                continue
             if(_schedule_data['schedule']['type'] == "periodic"):
                 if(_schedule_data['schedule']['period']['rate'] == "seconds"):
                     if(_schedule_data['schedule']['period']['at'] != ""):
