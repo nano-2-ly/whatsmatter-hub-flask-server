@@ -7,4 +7,15 @@ python3 app.py &
 python3 aws.py &
 ngrok start --all &
 
+sleep 1m
+echo "whatsmatter1234" | sudo-S iw reg set KR
+sleep 1m
+echo "whatsmatter1234" | sudo-S iw reg set KR
+sleep 1m
+echo "whatsmatter1234" | sudo-S iw reg set KR
+sleep 1m
+echo "whatsmatter1234" | sudo-S iw reg set KR
+sleep 1m
+echo "whatsmatter1234" | sudo-S iw reg set KR
+
 wait
