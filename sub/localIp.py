@@ -21,7 +21,7 @@ if __name__ == "__main__":
         print(f"Local IP Address: {ip}")
         
         # 로컬 서버에 현재 ip 전송
-        requests.post('http://192.168.0.3:5000/local/api/config/ip', json={'ip': ip})
+        requests.get(f'http://192.168.1.11:8000/local/api/matter?ip={ip}')
 
-        time.sleep(1)
+        time.sleep(3600)
         
