@@ -17,11 +17,14 @@ def get_local_ip():
 if __name__ == "__main__":
     # 아래 내용을 1시간 마다 반복
     while True:
-        ip = get_local_ip()
-        print(f"Local IP Address: {ip}")
-        
-        # 로컬 서버에 현재 ip 전송
-        requests.get(f'http://192.168.1.11:8000/matter?ip={ip}')
-
-        time.sleep(3600)
+        try:
+            ip = get_local_ip()
+            print(f"Local IP Address: {ip}")
+            
+            # 로컬 서버에 현재 ip 전송
+            requests.get(f'http://192.168.1.11:8000/matter?ip={ip}')
+    
+            time.sleep(3600)
+        except:
+            pass
         
