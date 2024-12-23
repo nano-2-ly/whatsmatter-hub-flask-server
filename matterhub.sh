@@ -3,7 +3,7 @@
 cd /home/matterhub/Desktop/matterhub
 python3 sub/ruleEngine.py &
 python3 sub/notifier.py &
-python3 sub/localip.py &
+python3 sub/localIp.py &
 python3 app.py &
 python3 aws.py &
 ngrok start --all &
