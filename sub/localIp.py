@@ -19,12 +19,13 @@ if __name__ == "__main__":
     while True:
         try:
             ip = get_local_ip()
-            print(f"Local IP Address: {ip}")
+            print(f"[localIp.py] Local IP Address: {ip}")
             
             # 로컬 서버에 현재 ip 전송
             requests.get(f'http://192.168.1.11:8000/matter?ip={ip}')
     
             time.sleep(3600)
-        except:
+        except Exception as e:
+            print(f"[localIp.py] Error: {e}")
             pass
         
