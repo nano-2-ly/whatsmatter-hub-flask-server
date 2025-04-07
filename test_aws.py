@@ -285,13 +285,68 @@ def api_reqeust_callback(client, userdata, message) :
 
     print(_message)
 
+def create_certificates_callback(client, userdata, message):
+    try:
+        cert_data = json.loads(message.payload.decode('utf-8'))
+        
+        # 새 인증서 저장
+        with open(certificate, "w") as f:
+            f.write(cert_data["certificatePem"])
+        with open(private_key, "w") as f:
+            f.write(cert_data["privateKey"])
+            
+        print("새 인증서가 생성되었습니다.")
+        return True
+    except Exception as e:
+        print(f"인증서 저장 중 오류 발생: {e}")
+        return False
+
+def create_new_certificates():
+    try:
+        # Claim 인증서로 임시 MQTT 클라이언트 생성
+        claim_mqtt_client = AWSIoTMQTTClient("temp_" + thing_name)
+        claim_mqtt_client.configureEndpoint(host, port)
+        claim_mqtt_client.configureCredentials(root_ca, claim_private_key, claim_certificate)
+        
+        # 연결
+        claim_mqtt_client.connect()
+        
+        # 인증서 응답을 받을 토픽 구독
+        claim_mqtt_client.subscribe(
+            f"$aws/certificates/{thing_name}/response",
+            1,
+            create_certificates_callback
+        )
+        
+        # 인증서 생성 요청
+        claim_mqtt_client.publish(
+            f"$aws/certificates/{thing_name}/create",
+            json.dumps({"thingName": thing_name}),
+            1
+        )
+        
+        # 응답 대기
+        time.sleep(5)
+        
+        # 연결 해제
+        claim_mqtt_client.disconnect()
+        return True
+        
+    except Exception as e:
+        print(f"인증서 생성 중 오류 발생: {e}")
+        return False
 
 def config():
-
     if not os.path.exists(res_file_path):
         os.makedirs(res_file_path)
         print(f"폴더 생성: {res_file_path}")
 
+    # 인증서 파일 존재 여부 확인
+    if not (os.path.exists(certificate) and os.path.exists(private_key)):
+        print("인증서 파일이 없습니다. Claim 인증서로 새 인증서를 생성합니다.")
+        if not create_new_certificates():
+            print("인증서 생성 실패. 프로그램을 종료합니다.")
+            sys.exit(1)
 
     file_list = [schedules_file_path, rules_file_path, rooms_file_path, devices_file_path, notifications_file_path]
     
@@ -299,7 +354,6 @@ def config():
         if not os.path.exists(f):
             with open(f, 'w') as f:
                 json.dump([], f)
-
             print(f"{f} 파일이 생성되었습니다.")
 
 
