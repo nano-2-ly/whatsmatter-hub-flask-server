@@ -1,0 +1,18 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: mqtt-app
+spec:
+  replicas: 100 # <<< 여기 100개!
+  selector:
+    matchLabels:
+      app: mqtt-app
+  template:
+    metadata:
+      labels:
+        app: mqtt-app
+    spec:
+      containers:
+        - name: mqtt-app
+          image: jerry369/mqtt-app:latest
+          imagePullPolicy: Always
