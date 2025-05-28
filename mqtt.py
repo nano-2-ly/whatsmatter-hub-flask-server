@@ -165,15 +165,6 @@ class AWSIoTClient:
             
             if registration_data:
                 print("사물 등록 성공:", registration_data)
-                # Update matterhub_id in .env with the registered thingName
-                with open('.env', 'r') as f:
-                    env_content = f.read()
-                env_content = env_content.replace(f'matterhub_id = "{os.environ.get("matterhub_id")}"', f'matterhub_id = "{registration_data["thingName"]}"')
-                with open('.env', 'w') as f:
-                    f.write(env_content)
-                os.environ['matterhub_id'] = registration_data['thingName']
-                global matterhub_id
-                matterhub_id = registration_data['thingName']
                 return True
             
             print("사물 등록 실패: 응답 없음")
@@ -194,7 +185,7 @@ class AWSIoTClient:
             has_cert, cert_file, key_file = self.check_certificate()
             
         # 새로운 인증서로 연결할 때는 client_id를 다르게 설정
-        self.client_id = matterhub_id  # 고유한 client_id 생성
+        self.client_id = f"device_{int(time.time())}"  # 고유한 client_id 생성
         
         event_loop_group = io.EventLoopGroup(1)
         host_resolver = io.DefaultHostResolver(event_loop_group)
