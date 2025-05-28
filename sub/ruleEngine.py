@@ -154,7 +154,7 @@ def checkCondition(condition):
 
 
 async def subscribe(r):
-    uri = f"ws://{HA_host.replace("http://","")}/api/websocket"
+    uri = f"ws://{HA_host.replace('http://','')}/api/websocket"
     while(1):
         try:
             async with websockets.connect(uri) as websocket:
