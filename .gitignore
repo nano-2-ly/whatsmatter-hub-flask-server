@@ -16,6 +16,7 @@ var/
 *.egg-info/
 .installed.cfg
 *.egg
+*.mmd
 
 # Serverless directories
 .serverless
@@ -27,3 +28,5 @@ cert
 
 device.pem.crt
 private.pem.key
+
+__init__.py
