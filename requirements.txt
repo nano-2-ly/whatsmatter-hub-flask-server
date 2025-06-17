@@ -2,7 +2,6 @@ Flask==3.0.3
 pip==24.0
 python-dotenv==1.0.1
 requests==2.31.0
-s3transfer==0.10.2
 schedule==1.2.2
 urllib3==1.26.18
 websockets==12.0
