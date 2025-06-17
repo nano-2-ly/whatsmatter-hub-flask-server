@@ -31,7 +31,7 @@ class AWSIoTClient:
         self.claim_cert = "whatsmatter_nipa_claim_cert.cert.pem"
         self.claim_key = "whatsmatter_nipa_claim_cert.private.key"
         self.endpoint = "a206qwcndl23az-ats.iot.ap-northeast-2.amazonaws.com"
-        self.client_id = "claim_cert_client"
+        self.client_id = "whatsmatter-nipa-claim-thing"
         
     def check_certificate(self):
         """발급된 인증서 확인"""
@@ -122,8 +122,8 @@ class AWSIoTClient:
     def register_thing(self, mqtt_connection, certificate_id, cert_ownership_token):
         """템플릿을 사용하여 사물 등록"""
         try:
-            template_topic = "$aws/provisioning-templates/whatsmatter-nipa_template/provision/json"
-            response_topic = "$aws/provisioning-templates/whatsmatter-nipa_template/provision/json/accepted"
+            template_topic = "$aws/provisioning-templates/whatsmatter-nipa-template/provision/json"
+            response_topic = "$aws/provisioning-templates/whatsmatter-nipa-template/provision/json/accepted"
             
             received_response = False
             registration_data = None
@@ -139,7 +139,7 @@ class AWSIoTClient:
                 qos=mqtt.QoS.AT_LEAST_ONCE,
                 callback=on_registration_response
             )
-            subscribe_future.result(timeout=10)
+            subscribe_future.result(timeout=30)
             
             # 등록 요청 전송
             registration_request = {

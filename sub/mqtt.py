@@ -30,7 +30,7 @@ class AWSIoTClient:
         self.cert_path = "certificates/"
         self.claim_cert = "whatsmatter_nipa_claim_cert.cert.pem"
         self.claim_key = "whatsmatter_nipa_claim_cert.private.key"
-        self.endpoint = "a206qwcndl23az-ats.iot.ap-northeast-2.amazonaws.com"
+        self.endpoint = "a2zr6a6gzb5fod-ats.iot.ap-northeast-2.amazonaws.com"
         self.client_id = "whatsmatter-nipa-claim-thing"
 
         # Ensure certificates directory exists
