@@ -456,8 +456,18 @@ if __name__ == "__main__":
         qos=mqtt.QoS.AT_LEAST_ONCE,
         callback=mqtt_callback
     )
+    
     subscribe_result = subscribe_future.result()
     print(f"matterhub/{matterhub_id}/api 토픽 구독 완료")
+
+    subscribe_future, packet_id = global_mqtt_connection.subscribe(
+        topic=f"matterhub/api",
+        qos=mqtt.QoS.AT_LEAST_ONCE,
+        callback=mqtt_callback
+    )
+    subscribe_result = subscribe_future.result()
+    print(f"matterhub/api 토픽 구독 완료")
+
 
     # 테스트용 데이터 publish
     test_data = {
