@@ -227,7 +227,7 @@ def check_dynamic_endpoint(target_endpoint, endpoint, target_method, method):
     
     return url_var_list
 
-def handle_ha_request(endpoint, method, request_func):
+def handle_ha_request(endpoint, method, request_func, response_id=None):
     """Home Assistant API 요청을 처리하고 응답을 반환하는 공통 함수"""
     try:
         response = request_func()
@@ -245,6 +245,11 @@ def handle_ha_request(endpoint, method, request_func):
             "status": "error",
             "data": []
         }
+    
+    # response_id가 있으면 응답에 추가
+    if response_id is not None:
+        res["response_id"] = response_id
+    
     print(f"Response: {res}")
     
     global_mqtt_connection.publish(
@@ -259,8 +264,10 @@ def mqtt_callback(topic, payload, **kwargs):
     try:
         endpoint = _message['endpoint']
         method = _message['method']
+        response_id = _message.get('response_id')  # response_id 추출 (없을 수 있음)
     except:
         # endpoint, method가 없는 경우 예외처리
+        response_id = None
         pass
 
     headers = {"Authorization": f"Bearer {hass_token}"}
@@ -270,7 +277,8 @@ def mqtt_callback(topic, payload, **kwargs):
         handle_ha_request(
             endpoint,
             method,
-            lambda: requests.get(f"{HA_host}/api/services", headers=headers)
+            lambda: requests.get(f"{HA_host}/api/services", headers=headers),
+            response_id
         )
         return
 
@@ -279,7 +287,8 @@ def mqtt_callback(topic, payload, **kwargs):
         handle_ha_request(
             endpoint,
             method,
-            lambda: requests.get(f"{HA_host}/api/states", headers=headers)
+            lambda: requests.get(f"{HA_host}/api/states", headers=headers),
+            response_id
         )
         return
 
@@ -289,7 +298,8 @@ def mqtt_callback(topic, payload, **kwargs):
         handle_ha_request(
             endpoint,
             method,
-            lambda: requests.get(f"{HA_host}/api/states/{check_res[0]}", headers=headers)
+            lambda: requests.get(f"{HA_host}/api/states/{check_res[0]}", headers=headers),
+            response_id
         )
         return
 
@@ -305,7 +315,8 @@ def mqtt_callback(topic, payload, **kwargs):
             method,
             lambda: requests.post(f"{HA_host}/api/services/{domain}/{service}", 
                                 data=json.dumps(res), 
-                                headers=headers)
+                                headers=headers),
+            response_id
         )
         return
 
@@ -314,7 +325,8 @@ def mqtt_callback(topic, payload, **kwargs):
         handle_ha_request(
             endpoint,
             method,
-            lambda: requests.get(f"{HA_host}/api/states/{check_res[0]}", headers=headers)
+            lambda: requests.get(f"{HA_host}/api/states/{check_res[0]}", headers=headers),
+            response_id
         )
         return
 
@@ -334,7 +346,8 @@ def mqtt_callback(topic, payload, **kwargs):
         handle_ha_request(
             endpoint,
             method,
-            get_domain_services
+            get_domain_services,
+            response_id
         )
         return
 
@@ -361,7 +374,7 @@ def mqtt_callback(topic, payload, **kwargs):
         def mock_request():
             return type('Response', (), {'json': lambda: data})()
 
-        handle_ha_request(endpoint, method, mock_request)
+        handle_ha_request(endpoint, method, mock_request, response_id)
         return
 
     if(endpoint=="/schedules" and method in ["get","post","delete","put"]):
@@ -390,7 +403,7 @@ def mqtt_callback(topic, payload, **kwargs):
         def mock_request():
             return type('Response', (), {'json': lambda: data})()
 
-        handle_ha_request(endpoint, method, mock_request)
+        handle_ha_request(endpoint, method, mock_request, response_id)
         return
 
     if(endpoint=="/rules" and method in ["get","post","delete","put"]):
@@ -416,7 +429,7 @@ def mqtt_callback(topic, payload, **kwargs):
         def mock_request():
             return type('Response', (), {'json': lambda: data})()
 
-        handle_ha_request(endpoint, method, mock_request)
+        handle_ha_request(endpoint, method, mock_request, response_id)
         return
 
     print(_message)
