@@ -249,7 +249,7 @@ def handle_ha_request(endpoint, method, request_func, response_id=None):
     
     # response_id가 있으면 응답에 추가
     if response_id is not None:
-        res["response_id"] = response_id
+        res["response_id"] = f"matterhub/{matterhub_id}/api/response"
     
     print(f"Response: {res}")
     
