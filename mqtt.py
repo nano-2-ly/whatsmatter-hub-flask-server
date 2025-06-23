@@ -166,6 +166,26 @@ class AWSIoTClient:
             
             if registration_data:
                 print("사물 등록 성공:", registration_data)
+                
+                global matterhub_id
+                matterhub_id = registration_data['thingName']
+                # .env 파일 읽기 및 업데이트
+                env_data = {}
+                if os.path.exists('.env'):
+                    with open('.env', 'r') as f:
+                        for line in f:
+                            if '=' in line:
+                                key, value = line.strip().split('=', 1)
+                                env_data[key] = value
+                
+                # matterhub_id 업데이트 또는 추가
+                env_data['matterhub_id'] = f"\"{matterhub_id}\""
+                
+                # .env 파일에 저장
+                with open('.env', 'w') as f:
+                    for key, value in env_data.items():
+                        f.write(f'{key}={value}\n')
+                print(f"matterhub_id를 .env 파일에 저장했습니다: {matterhub_id}")
                 return True
             
             print("사물 등록 실패: 응답 없음")
@@ -454,6 +474,7 @@ def config():
 
 # 사용 예시
 if __name__ == "__main__":
+    
     config()
 
     one_time = one_time_schedule()
