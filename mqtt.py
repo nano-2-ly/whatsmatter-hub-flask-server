@@ -2,6 +2,7 @@ import json
 import os
 import threading
 import time
+import uuid
 from awscrt import io, mqtt
 from awsiot import mqtt_connection_builder
 from dotenv import load_dotenv
@@ -265,9 +266,12 @@ def mqtt_callback(topic, payload, **kwargs):
         endpoint = _message['endpoint']
         method = _message['method']
         response_id = _message.get('response_id')  # response_id 추출 (없을 수 있음)
+        # response_id가 없으면 임의의 UUID 생성
+        if response_id is None:
+            response_id = str(uuid.uuid4())
     except:
         # endpoint, method가 없는 경우 예외처리
-        response_id = None
+        response_id = str(uuid.uuid4())  # 예외 발생 시에도 UUID 생성
         pass
 
     headers = {"Authorization": f"Bearer {hass_token}"}
