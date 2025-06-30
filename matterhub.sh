@@ -1,4 +1,4 @@
-#!bin/bash
+#!/bin/bash
 
 cd /home/hyodol/Desktop/matterhub
 python3 sub/ruleEngine.py &
