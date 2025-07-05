@@ -1,0 +1,32 @@
+{
+  "apps": [
+    {
+      "name": "ruleEngine",
+      "script": "sub/ruleEngine.py",
+      "interpreter": "python3",
+      "instances": 1,
+      "autorestart": true,
+    },
+    {
+      "name": "notifier",
+      "script": "sub/notifier.py",
+      "interpreter": "python3",
+      "instances": 1,
+      "autorestart": true,
+    },
+    {
+      "name": "app",
+      "script": "app.py",
+      "interpreter": "python3",
+      "instances": 1,
+      "autorestart": true,
+    },
+    {
+      "name": "mqtt",
+      "script": "mqtt.py",
+      "interpreter": "python3",
+      "instances": 1,
+      "autorestart": true,
+    }
+  ]
+}
