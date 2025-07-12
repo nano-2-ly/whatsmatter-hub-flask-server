@@ -22,7 +22,7 @@ if __name__ == "__main__":
             print(f"[localIp.py] Local IP Address: {ip}")
             
             # 로컬 서버에 현재 ip 전송
-            requests.get(f'http://192.168.1.11:8000/matter?ip={ip}')
+            requests.get(f'http://localhost:8000/matter?ip={ip}')
     
             time.sleep(3600)
         except Exception as e:
